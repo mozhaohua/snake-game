@@ -66,7 +66,7 @@
     <h1>🐍 贪吃蛇</h1>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div class="score">得分: <span id="score">0</span></div>
-    <button onclick="resetGame()">重新开始</button>
+    <button onclick="startGame()">开始游戏</button>
     <p class="instructions">使用方向键或 WASD 控制蛇的移动</p>
 
     <script>
@@ -84,6 +84,7 @@
         let score = 0;
         let gameLoop = null;
         let isRunning = false;
+        let hasStarted = false;
 
         function initGame() {
             snake = [
@@ -96,8 +97,15 @@
             score = 0;
             scoreElement.textContent = score;
             placeFood();
+            draw();
+        }
+
+        function startGame() {
+            if (hasStarted) {
+                initGame();
+            }
+            hasStarted = true;
             isRunning = true;
-            
             if (gameLoop) clearInterval(gameLoop);
             gameLoop = setInterval(update, 200);
         }
@@ -229,10 +237,11 @@
             ctx.fillStyle = '#fff';
             ctx.font = '20px Segoe UI';
             ctx.fillText(`最终得分: ${score}`, canvas.width / 2, canvas.height / 2 + 20);
+            ctx.fillText('点击"开始游戏"重新玩', canvas.width / 2, canvas.height / 2 + 50);
         }
 
         function resetGame() {
-            initGame();
+            startGame();
         }
 
         // 键盘控制
@@ -288,7 +297,7 @@
             }
         });
 
-        // 初始化游戏
+        // 初始化游戏（等待点击开始）
         initGame();
     </script>
 </body>
